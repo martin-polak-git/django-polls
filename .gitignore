@@ -114,3 +114,8 @@ media/
 # **/migrations/**
 # !**/migrations
 # !**/migrations/__init__.py
+
+
+# file: ~/.gitignore_global
+.DS_Store
+.idea
