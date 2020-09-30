@@ -1,0 +1,33 @@
+{% extends 'polls/base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>{{ titel }}</h1>
+<p class="lead">
+  Herzlich willkommen auf der Abstimmungsseite f&uuml;r meine
+  Umfragen! Hier k&ouml;nnt Ihr einfach abstimmen!
+  Bitte schlie&szlig;t diese Seite nicht!
+</p>
+<hr />
+<h2>Aktuell laufende Umfragen</h2>
+{% if umfragen %}
+<ul>
+  {% for umfrage in umfragen %}
+  {% if umfrage.is_active %}
+  <li><a href="{% url 'polls:umfrage-detail' umfrage.slug %}">{{ umfrage.name }}</a></li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Abgeschlossene Umfragen</h2>
+{% if umfragen %}
+<ul>
+  {% for umfrage in umfragen %}
+  {% if not umfrage.is_active %}
+  <li><a href="{% url 'polls:results' umfrage.slug %}">{{ umfrage.name }}</a></li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

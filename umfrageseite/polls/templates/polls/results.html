@@ -1,0 +1,30 @@
+{% extends 'polls/base.html' %}
+{% block content %}
+{% if object %}
+<h1>{{ object.name }}</h1>
+<h2>Ergebnis</h2>
+<a href="{% url 'polls:index' %}">zur&uuml;ck zur Startseite</a>
+{% if access or not umfrage.is_active %}
+<p class="lead">
+  Vielen Dank, dass Du abgestimmt hast!
+</p>
+
+{% if object.choice_set.all %}
+<ul>
+  {% for choice in object.choice_set.all %}
+  <li>{{choice.name}}: {{ choice.votes }} haben daf&uuml;r abgestimmt!</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Leider wurde noch keine Antwortm&ouml;glichkeit hinterlegt.</p>
+{% endif %}
+
+{% else %}
+<h3>Fehler: Umfrageergebnisse k&ouml;nnen nur angesehen werden,
+  wenn vorher abgestimmt wurde!</h3>
+{% endif %}
+
+{% else %}
+<h1>Es kann keine Umfrage ausgegeben werden</h1>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'polls/base.html' %}
+{% block content %}
+{% if object %}
+<h1>{{ object.name }}</h1>
+<a href="{% url 'polls:index' %}">zur&uuml;ck zur Startseite</a>
+<h2>Antwortm&ouml;glichkeiten</h2>
+
+{% for message in messages %}
+<div class="alert {{ message.tags }} alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{ message }}
+</div>
+{% endfor %}
+
+{% if object.is_active and not voted %}
+{% if object.choice_set.all %}
+<form action="{% url 'polls:vote' object.slug %}" method="post">
+  {% csrf_token %}
+  {% for choice in object.choice_set.all %}
+  <input type="radio" name="choice" value="{{ choice.id }}"
+  id="choice{{ forloop.counter }}"/>
+  <label for="choice{{ forloop.counter }}">{{ choice.name }}</label>
+  {% endfor %}
+  <input type="submit" value="Antwort absenden" />
+</form>
+{% else %}
+<p>Leider wurde noch keine Antwortm&ouml;glichkeit hinterlegt.</p>
+{% endif %}
+
+{% else %}
+<p>
+  Die Umfrage ist abgelaufen oder du hast bereits abgestimmt und kannst dir
+  <a href="{% url 'polls:results' object.slug %}">hier</a>
+  die Ergebnisse ansehen.
+</p>
+{% endif %}
+
+{% else %}
+<h1>Es kann keine Umfrage ausgegeben werden</h1>
+{% endif %}
+{% endblock %}
